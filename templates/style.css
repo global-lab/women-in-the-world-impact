@@ -1,9 +1,31 @@
-.sidebar{
+.sidebar {
     position: absolute;
     right: 0;
     top: 0;
-    height: 100vh;
-    width: 30vw;
-    background-color: #b4b1b0;
+    min-height: 100vh;
+    width: 40vw;
+    /*background-color: #b4b1b0;*/
+    background: linear-gradient(to bottom, #2590ff 0%, #6c37ff 100%);
+}
+
+.list-title {
+    font-size: 1.2em;
+}
+
+.list-content {
+    font-size: 0.8em;
+}
+
+.btn {
+    outline: none;
+    border: none;
+}
+
+.btn.active.focus, .btn.active:focus,
+.btn.focus, .btn:active.focus,
+.btn:active:focus, .btn:focus{
+    outline: none !important;
+    border: none;
+    box-shadow: none;
 }
 

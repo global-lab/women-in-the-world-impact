@@ -1,37 +1,49 @@
 let colors = {
-    'Business': "#570809",
-    'Education': "#5e3a53",
-    'Cultural': "#3c4d85",
-    'Health': '#927417',
-    'Other': "#783b16"
+    'Women in the World Projects': "#3c3c3c",
+    'Business': "#3ec3bb",
+    'Education': "#2d67ff",
+    'Cultural': "#28a7ff    ",
+    'Health': '#654eff',
+    'Other': "#a71fdb"
 }
 
-let blurbs = {
-    'Education': "<ul>" +
-        "<li>30+ projects</li>" +
-        "<li>Introduce more women and girls to STEM through clubs, STEM camps, and understanding of technology</li>" +
-        "<li>Assess the presence of gendered career interests in Worcester schools</li>" +
-        "<li>Evaluate the culture and support surrounding women at WPI</li></ul>",
-    'Cultural': "No information about this yet",
-    'Business': "<ul>" +
-        "<li>15+ projects</li>" +
-        "<li>Projects support marginalized women to start local businesses</li>" +
-        "<li>Help existing businesses expand and grow</li>" +
-        "<li>Aid in marketing women’s products and organizations</li>" +
-        "<li> Use technology to expand women’s businesses</li>" +
-        "<li>Analyze factors affecting employment of women</li>" +
-        "</ul>",
-    'Health': "<ul>" +
-        "<li>20+ projects</li>" +
-        "<li>Increase awareness of women’s health issues within disadvantaged communities</li>" +
-        "<li>Aid organizations that help women with cancer</li>" +
-        "<li>Develop programs to prevent abuse of women</li>" +
-        "<li>Research reproductive health issues</li>" +
-        "<li> Study perceptions of health risks resulting from making weight in rowing</li>" +
-        "<li>Aid in fundraising for homeless women</li>",
-    'Other': "Projects that did not fit one particular category"
-};
+let a = " <div class='list-group-item list-group-item-action flex-column align-items-start'>"
+let adiv = "<div class='d-flex w-100 justify-content-between'>"
+// "      <h5 class='mb-1'>List group item heading</h5>\n" +
+// "      <small>3 days ago</small>\n" +
+// "    </div>\n" +
+// "    <p class=\"mb-1\">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>\n" +
+// "    <small>Donec id elit non mi porta.</small>\n" +
+// "  </a>"
 
+let blurbs = {
+    'Women in the World Projects': [['Women in the World Projects', 'WPI students have helped improve the lives of women' +
+    ' and girls for over 20 years in 14 countries through 90+ Interactive Qualifying Projects (IQPs). ' +
+    'This visualization aims to show the extent of fields in which our IQPs have made a difference for women']],
+    'Education': [['Education', "<ul>" +
+    "<li>30+ projects</li>" +
+    "<li>Introduce more women and girls to STEM through clubs, STEM camps, and understanding of technology</li>" +
+    "<li>Assess the presence of gendered career interests in Worcester schools</li>" +
+    "<li>Evaluate the culture and support surrounding women at WPI</li></ul>"]],
+    'Cultural': [['Cultural', "No information about this yet"]],
+    'Business': [['Business', "<ul>" +
+    "<li>15+ projects</li>" +
+    "<li>Projects support marginalized women to start local businesses</li>" +
+    "<li>Help existing businesses expand and grow</li>" +
+    "<li>Aid in marketing women’s products and organizations</li>" +
+    "<li> Use technology to expand women’s businesses</li>" +
+    "<li>Analyze factors affecting employment of women</li>" +
+    "</ul>"]],
+    'Health': [['Health', "<ul>" +
+    "<li>20+ projects</li>" +
+    "<li>Increase awareness of women’s health issues within disadvantaged communities</li>" +
+    "<li>Aid organizations that help women with cancer</li>" +
+    "<li>Develop programs to prevent abuse of women</li>" +
+    "<li>Research reproductive health issues</li>" +
+    "<li> Study perceptions of health risks resulting from making weight in rowing</li>" +
+    "<li>Aid in fundraising for homeless women</li></ul>"]],
+    'Other': [['Other', "Projects that did not fit one particular category"]]
+};
 
 window.onload = function () {
     graph()
@@ -44,37 +56,31 @@ function graph() {
     d3.json(other_json_path).then(function (other_data) {
         function gen_title_list() {
             for (let cat_dict of Object.values(other_data.children)) {
-                // if (cat_dict.name === cat) {
                 for (let child_dict of cat_dict.children) {
-                    console.log(child_dict.name);
-                    // if (child_dict.name === subcat) {
-                    let total_text = "<ul>";
+                    let total_text = []
                     for (let title of child_dict.children) {
-                        console.log('title', title)
-                        total_text += "<li>" + title.name + "</li>"
+                        total_text.push([title.name, title.data.Impact, title.data.Date, title.data.Location, title.data.Link])
                     }
-                    total_text += "</ul>";
                     blurbs[child_dict.name] = total_text;
-
                 }
             }
             console.log(blurbs)
         }
 
-        gen_title_list()
+        gen_title_list();
 
         d3.json(json_path).then(function (data) {
             console.log(data)
-            const margin = ({top: 10, right: 30 * (window.innerWidth / 100), bottom: 10, left: 300});
+            const margin = ({top: 0, right: 30 * (window.innerWidth / 100), bottom: 10, left: window.innerWidth/4});
             const width = window.innerWidth - margin.right;
-            const height = window.innerHeight;
+            const height = window.innerHeight-300;
 
-            const dy = width / 6;
-            const dx = height / 20;
+            const dx = width / 10;
+            const dy = height / 4;
             const root = d3.hierarchy(data);
 
             let tree = d3.tree().nodeSize([dx, dy])
-            let diagonal = d3.linkHorizontal().x(d => d.y).y(d => d.x)
+            let diagonal = d3.linkVertical().x(d => d.x).y(d => d.y)
 
             root.x0 = dy / 2;
             root.y0 = 0;
@@ -96,7 +102,9 @@ function graph() {
                 .attr('y', margin.top)
                 .attr("preserveAspectRatio", "xMidYMid meet")
                 .style("font", "18px Microsoft Tai Le")
-                .style("user-select", "none");
+                .style("user-select", "none")
+                .attr('transform', `translate(${width/15},0)`)
+
 
             const gLink = svg.append("g")
                 .attr("fill", "none")
@@ -108,8 +116,7 @@ function graph() {
                 .attr("cursor", "pointer")
                 .attr("pointer-events", "all");
 
-            function update(source) {
-                const duration = d3.event && d3.event.altKey ? 2500 : 250;
+            function update(source, duration = d3.event && d3.event.altKey ? 2500 : 250) {
                 const nodes = root.descendants().reverse();
                 const links = root.links();
 
@@ -137,15 +144,21 @@ function graph() {
 
                 // Enter any new nodes at the parent's previous position.
                 const nodeEnter = node.enter().append("g")
-                    .attr("transform", d => `translate(${source.y0},${source.x0})`)
+                    .attr("transform", d => `translate(${source.x0},${source.y0})`)
                     .attr("fill", d => d.fill)
                     .attr("fill-opacity", 1)
                     .attr("stroke-opacity", 1)
                     .attr("class", d => gen_class(d.data.name))
                     .on("click", d => {
                         d.children = d.children ? null : d._children;
-                        console.log('here', d)
-                        document.getElementById("content").innerHTML = blurbs[d.data.name]
+                        // console.log('here', d)
+                        document.getElementById('content').innerHTML = "";
+                        let i = 0;
+                        if (blurbs[d.data.name] !== undefined) {
+                            for (let e of blurbs[d.data.name]) {
+                                gen_sidebar_elements(e[0], e[1], e[2], e[3], e[4], d.fill, i += 1)
+                            }
+                        }
                         update(d);
                     });
 
@@ -169,16 +182,21 @@ function graph() {
                     .attr("stroke-width", 0.4)
                     .attr("stroke", d => d.fill)
 
+                d3.selectAll('text')
+                    .attr('transform', 'rotate(30)')
+                    .attr('font-size', '1.2em')
+
+
 
                 // Transition nodes to their new position.
                 const nodeUpdate = node.merge(nodeEnter).transition(transition)
-                    .attr("transform", d => `translate(${d.y},${d.x})`)
+                    .attr("transform", d => `translate(${d.x},${d.y})`)
                     .attr("fill-opacity", 1)
                     .attr("stroke-opacity", 1);
 
                 // Transition exiting nodes to the parent's new position.
                 const nodeExit = node.exit().transition(transition).remove()
-                    .attr("transform", d => `translate(${source.y},${source.x})`)
+                    .attr("transform", d => `translate(${source.x},${source.y})`)
                     .attr("fill-opacity", 0)
                     .attr("stroke-opacity", 0);
 
@@ -209,8 +227,16 @@ function graph() {
                     d.x0 = d.x;
                     d.y0 = d.y;
                 });
+
+
             }
 
+
+            svg.call(d3.zoom().on("zoom", function () {
+                d3.selectAll('g')
+                    .attr("transform", d3.event.transform)
+                update(root, 0)
+            }));
             update(root);
             // add_interactivity()
             return svg.node();
@@ -239,5 +265,93 @@ function get_index(category, cat_arr) {
             return i
         }
     }
+}
+
+// let counter = 0;
+function gen_sidebar_elements(title_text, blurb_text, date, location, link, fill, counter) {
+    let background_color = 'rgba(255,255,255,0.5)'
+
+
+    //creating div that will contain all accordion card content
+    let content_container = document.createElement("DIV");
+    content_container.classList.add('card');
+    content_container.style.outline = '#2f2f2f'
+    content_container.style.backgroundColor = background_color;
+
+    //making accordion card blurb (the expandable part)
+    let blurb_div = document.createElement('DIV');
+    blurb_div.classList.add('collapse')
+    blurb_div.id = 'collapse' + counter;
+    blurb_div.setAttribute('aria-labelledby', 'heading' + counter);
+    blurb_div.setAttribute('data-parent', '#content');
+
+    let blurb_body = document.createElement('DIV');
+    blurb_body.classList.add('card-body');
+    blurb_body.classList.add('pb-5');
+    blurb_body.classList.add('h-100');
+
+
+    blurb_body.style.backgroundColor = background_color;
+    blurb_body.innerHTML = blurb_text + "<br/>";
+
+    console.log('link', link)
+    if (link !== undefined) {
+        let a = document.createElement("a");
+        a.setAttribute('href', link);
+        a.setAttribute('target', '_blank');
+        a.style.color = "#151515";
+        // a.classList.add('font-weight-light')
+        a.classList.add('float-right')
+        a.classList.add('text-muted');
+        a.classList.add('float-right')
+        a.innerHTML = '<p class="text-dark" style="font-size: 0.9em">Link to paper</p>';
+        blurb_body.appendChild(a)
+    }
+
+    //making accordion card header
+    let title_div = document.createElement("DIV");
+    title_div.classList.add('card-header');
+    title_div.id = 'heading' + counter;
+
+
+    // let title_h5 = document.createElement('h5');
+    // title_h5.classList.add('mb-0');
+
+    let title_button = document.createElement('button');
+    title_button.type = 'button';
+    title_button.classList.add('btn')
+    title_button.classList.add('btn-light');
+    title_button.classList.add('btn-block');
+    title_button.classList.add('text-left');
+    title_button.classList.add('m-0');
+
+    title_button.setAttribute('data-toggle', 'collapse');
+    title_button.setAttribute('href', '#collapse' + counter)
+    title_button.setAttribute('data-target', '#collapse' + counter);
+    title_button.setAttribute('aria-controls', 'collapse' + counter);
+    title_button.style.backgroundColor = 'rgba(0,0,0,0)'
+
+    // console.log('date', date, 'location', location)
+
+    title_button.innerHTML = title_text + '<br/>';
+    if (date !== undefined && location !== undefined) {
+        let small_text = document.createElement('SMALL');
+        small_text.classList.add('text-muted');
+        small_text.classList.add('float-right')
+        small_text.innerHTML = location + " | " + date;
+        title_button.appendChild(small_text)
+
+    }
+
+    blurb_div.appendChild(blurb_body);
+    // title_h5.appendChild(title_button);
+    title_div.appendChild(title_button);
+    content_container.appendChild(title_div);
+    content_container.appendChild(blurb_div);
+    document.getElementById('content').appendChild(content_container);
+
+
+    // counter += 1;
+    return content_container
 }
 
