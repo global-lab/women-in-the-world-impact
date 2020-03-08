@@ -1,5 +1,5 @@
 let colors = {
-    'Women in the World Projects': "#3c3c3c",
+    'Women in the World Projects': "#4a4a4a",
     'Business': "#3ec3bb",
     'Education': "#2d67ff",
     'Cultural': "#28a7ff    ",
@@ -71,12 +71,12 @@ function graph() {
 
         d3.json(json_path).then(function (data) {
             console.log(data)
-            const margin = ({top: 0, right: 30 * (window.innerWidth / 100), bottom: 10, left: window.innerWidth/4});
+            const margin = ({top: -window.innerHeight/4, right: 30 * (window.innerWidth / 100), bottom: 10, left: (window.innerWidth-(30 * (window.innerWidth / 100)))/2.5});
             const width = window.innerWidth - margin.right;
-            const height = window.innerHeight-300;
+            const height = window.innerHeight;
 
             const dx = width / 10;
-            const dy = height / 4;
+            const dy = height / 6;
             const root = d3.hierarchy(data);
 
             let tree = d3.tree().nodeSize([dx, dy])
@@ -103,7 +103,7 @@ function graph() {
                 .attr("preserveAspectRatio", "xMidYMid meet")
                 .style("font", "18px Microsoft Tai Le")
                 .style("user-select", "none")
-                .attr('transform', `translate(${width/15},0)`)
+                // .attr('transform', `translate(${},${-height/4})`)
 
 
             const gLink = svg.append("g")
