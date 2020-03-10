@@ -152,11 +152,7 @@ function graph() {
                         let i = 0;
                         if (blurbs[d.data.name] !== undefined) {
                             for (let e of blurbs[d.data.name]) {
-                                if (d.data.name === 'Business' || d.data.name === 'Education' || d.data.name === 'Cultural' || d.data.name === 'Health' || d.data.name === 'Other') {
-                                    gen_sidebar_elements(e[0], e[1], e[2], e[3], e[4], d.fill, i += 1, true)
-                                } else {
-                                    gen_sidebar_elements(e[0], e[1], e[2], e[3], e[4], d.fill, i += 1, false)
-                                }
+                                gen_sidebar_elements(e[0], e[1], e[2], e[3], e[4], d.fill, i += 1)
                             }
                         }
                         update(d);
@@ -284,9 +280,6 @@ function gen_sidebar_elements(title_text, blurb_text, date, location, link, fill
     blurb_div.id = 'collapse' + counter;
     blurb_div.setAttribute('aria-labelledby', 'heading' + counter);
     blurb_div.setAttribute('data-parent', '#content');
-    blurb_div.setAttribute('class', 'd-flex');
-    blurb_div.setAttribute('class', 'align-items-center');
-
 
     let blurb_body = document.createElement('DIV');
     blurb_body.classList.add('card-body');
@@ -344,14 +337,13 @@ function gen_sidebar_elements(title_text, blurb_text, date, location, link, fill
     }
 
     blurb_div.appendChild(blurb_body);
-    // title_h5.appendChild(title_button);
     title_div.appendChild(title_button);
     content_container.appendChild(title_div);
     content_container.appendChild(blurb_div);
     document.getElementById('content').appendChild(content_container);
 
-    if (is_opened) {
-        $('.collapse').collapse()
+    if (Object.keys(colors).includes(title_text)) {
+        blurb_div.classList.add('show')
     }
 
     // counter += 1;
