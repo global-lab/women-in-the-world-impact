@@ -1,5 +1,5 @@
 let colors = {
-    'Women in the World Projects': "#4a4a4a",
+    'Categories of Projects Impacting Women': "#4a4a4a",
     'Business': "#3ec3bb",
     'Education': "#2d67ff",
     'Cultural': "#28a7ff    ",
@@ -7,17 +7,8 @@ let colors = {
     'Other': "#a71fdb"
 }
 
-let a = " <div class='list-group-item list-group-item-action flex-column align-items-start'>"
-let adiv = "<div class='d-flex w-100 justify-content-between'>"
-// "      <h5 class='mb-1'>List group item heading</h5>\n" +
-// "      <small>3 days ago</small>\n" +
-// "    </div>\n" +
-// "    <p class=\"mb-1\">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>\n" +
-// "    <small>Donec id elit non mi porta.</small>\n" +
-// "  </a>"
-
 let blurbs = {
-    'Women in the World Projects': [['Women in the World Projects', 'WPI students have helped improve the lives of women' +
+    'Categories of Projects Impacting Women': [['Categories of Projects Impacting Women', 'WPI students have helped improve the lives of women' +
     ' and girls for over 20 years in 14 countries through 90+ Interactive Qualifying Projects (IQPs). ' +
     'This visualization aims to show the extent of fields in which our IQPs have made a difference for women']],
     'Education': [['Education', "<ul>" +
@@ -71,7 +62,12 @@ function graph() {
 
         d3.json(json_path).then(function (data) {
             console.log(data)
-            const margin = ({top: -window.innerHeight/4, right: 30 * (window.innerWidth / 100), bottom: 10, left: (window.innerWidth-(30 * (window.innerWidth / 100)))/2.5});
+            const margin = ({
+                top: -window.innerHeight / 4,
+                right: 30 * (window.innerWidth / 100),
+                bottom: 10,
+                left: (window.innerWidth - (30 * (window.innerWidth / 100))) / 2.5
+            });
             const width = window.innerWidth - margin.right;
             const height = window.innerHeight;
 
@@ -103,7 +99,7 @@ function graph() {
                 .attr("preserveAspectRatio", "xMidYMid meet")
                 .style("font", "18px Microsoft Tai Le")
                 .style("user-select", "none")
-                // .attr('transform', `translate(${},${-height/4})`)
+            // .attr('transform', `translate(${},${-height/4})`)
 
 
             const gLink = svg.append("g")
@@ -156,7 +152,11 @@ function graph() {
                         let i = 0;
                         if (blurbs[d.data.name] !== undefined) {
                             for (let e of blurbs[d.data.name]) {
-                                gen_sidebar_elements(e[0], e[1], e[2], e[3], e[4], d.fill, i += 1)
+                                if (d.data.name === 'Business' || d.data.name === 'Education' || d.data.name === 'Cultural' || d.data.name === 'Health' || d.data.name === 'Other') {
+                                    gen_sidebar_elements(e[0], e[1], e[2], e[3], e[4], d.fill, i += 1, true)
+                                } else {
+                                    gen_sidebar_elements(e[0], e[1], e[2], e[3], e[4], d.fill, i += 1, false)
+                                }
                             }
                         }
                         update(d);
@@ -185,7 +185,6 @@ function graph() {
                 d3.selectAll('text')
                     .attr('transform', 'rotate(30)')
                     .attr('font-size', '1.2em')
-
 
 
                 // Transition nodes to their new position.
@@ -268,8 +267,9 @@ function get_index(category, cat_arr) {
 }
 
 // let counter = 0;
-function gen_sidebar_elements(title_text, blurb_text, date, location, link, fill, counter) {
-    let background_color = 'rgba(255,255,255,0.5)'
+function gen_sidebar_elements(title_text, blurb_text, date, location, link, fill, counter, is_opened) {
+
+    let background_color = 'rgba(255,255,255,0.5)';
 
 
     //creating div that will contain all accordion card content
@@ -284,6 +284,9 @@ function gen_sidebar_elements(title_text, blurb_text, date, location, link, fill
     blurb_div.id = 'collapse' + counter;
     blurb_div.setAttribute('aria-labelledby', 'heading' + counter);
     blurb_div.setAttribute('data-parent', '#content');
+    blurb_div.setAttribute('class', 'd-flex');
+    blurb_div.setAttribute('class', 'align-items-center');
+
 
     let blurb_body = document.createElement('DIV');
     blurb_body.classList.add('card-body');
@@ -313,9 +316,6 @@ function gen_sidebar_elements(title_text, blurb_text, date, location, link, fill
     title_div.classList.add('card-header');
     title_div.id = 'heading' + counter;
 
-
-    // let title_h5 = document.createElement('h5');
-    // title_h5.classList.add('mb-0');
 
     let title_button = document.createElement('button');
     title_button.type = 'button';
@@ -350,6 +350,9 @@ function gen_sidebar_elements(title_text, blurb_text, date, location, link, fill
     content_container.appendChild(blurb_div);
     document.getElementById('content').appendChild(content_container);
 
+    if (is_opened) {
+        $('.collapse').collapse()
+    }
 
     // counter += 1;
     return content_container
