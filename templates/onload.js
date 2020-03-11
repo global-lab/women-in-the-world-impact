@@ -50,5 +50,7 @@ function resize_div() {
         margin.right = $("#resizable").width();
        d3.selectAll('svg')
            .attr('width', window.innerWidth-margin.right)
+           .attr('height', window.innerHeight)
+
     })
 }
