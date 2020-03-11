@@ -16,7 +16,7 @@ function create_json() {
         // console.log('subcat arr', subcat_arr);
 
         let data_reorg = {
-            'name': 'Categories of Projects Impacting Women',
+            'name': 'Projects Impacting Women',
             'children': []
         };
 

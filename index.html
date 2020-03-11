@@ -9,7 +9,7 @@
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script src="https://d3js.org/d3.v5.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/interactjs/dist/interact.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
             integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
             crossorigin="anonymous"></script>
@@ -21,6 +21,10 @@
             crossorigin="anonymous"></script>
     <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/dat-gui/0.5/dat.gui.min.js"></script>
 
+    <link rel="stylesheet" href="jquery-ui-1.12.1/jquery-ui.min.css">
+    <script src="jquery-ui-1.12.1/external/jquery/jquery.js"></script>
+    <script src="jquery-ui-1.12.1/jquery-ui.min.js"></script>
+
     <script src="templates/tree-diagram.js"></script>
     <script src="templates/onload.js"></script>
     <link rel="stylesheet" href="templates/style.css">
@@ -30,7 +34,7 @@
 <!---->
 <!--</div>-->
 <div id="viz"></div>
-<div class="sidebar pre-scrollable">
+<div class="sidebar pre-scrollable" id="resizable">
     <!--<div class="col h-100 p-0" id="content">-->
     <!--</div>-->
     <div class="accordion" id="content">
@@ -59,7 +63,8 @@
 </div>
 <div class="footer ml-5">
     <div class="row">
-        <p class="text-muted">Global Lab at WPI | Visualization by Petra Kumi | Data by Cecilia Schroeder and Denisa Kim</p>
+        <p class="text-muted">Global Lab at WPI | Visualization by Petra Kumi | Data by Cecilia Schroeder and Denisa
+            Kim</p>
     </div>
 </div>
 
