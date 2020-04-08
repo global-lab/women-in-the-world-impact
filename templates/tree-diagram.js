@@ -1,3 +1,4 @@
+let toggleval = "init"
 const margin = ({
     top: 0,
     right: 40 * (window.innerWidth / 100),
@@ -52,6 +53,7 @@ function graph() {
 
             const svg = d3.select("#viz")
                 .append('svg')
+                .attr('id', "tree")
                 .attr('width', width)
                 .attr('height', height)
                 .attr('x', margin.left)
@@ -90,7 +92,7 @@ function graph() {
 
                 const transition = svg.transition()
                     .duration(duration)
-                    .attr("viewBox", [-width / 2, -height / 2.5, width, height])
+                    .attr("viewBox", [-width / 2, -height / 4, width, height])
                     .tween("resize", window.ResizeObserver ? null : () => () => svg.dispatch("toggle"));
 
                 // Update the nodes…
@@ -184,16 +186,29 @@ function graph() {
                 });
             }
 
+            document.getElementById('togglepanzoom').addEventListener('click', d => {
+                console.log('toggleval', toggleval)
+                if (toggleval === 'on' || toggleval === "init") {
+                    svg.call(d3.zoom().on("zoom", function () {
+                        d3.selectAll('g')
+                            .attr("transform", d3.event.transform);
+                        update(root, 0)
+                    }));
+                    toggleval = "off";
+                } else {
+                    svg.call(d3.zoom().on("zoom", null));
+                    toggleval = "on";
+                }
+            });
 
-            svg.call(d3.zoom().on("zoom", function () {
-                d3.selectAll('g')
-                    .attr("transform", d3.event.transform);
-                update(root, 0)
-            }));
             update(root);
             return svg.node();
         })
     })
+}
+
+function add_pan_zoom() {
+    d3.select("#tree")
 }
 
 //
