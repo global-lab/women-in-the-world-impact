@@ -196,7 +196,7 @@ function graph() {
                     }));
                     toggleval = "off";
                 } else {
-                    svg.call(d3.zoom().on("zoom", null));
+                    svg.on("zoom", null);
                     toggleval = "on";
                 }
             });
