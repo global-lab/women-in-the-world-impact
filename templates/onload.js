@@ -1,10 +1,19 @@
+// let colors = {
+//     'Projects Impacting Women': "#4a4a4a",
+//     'Business': "#3ec3bb",
+//     'Cultural': "#28a7ff",
+//     'Education': "#2d67ff",
+//     'Health': '#654eff',
+//     'Other': "#a71fdb"
+// };
+
 let colors = {
     'Projects Impacting Women': "#4a4a4a",
-    'Business': "#3ec3bb",
-    'Education': "#2d67ff",
-    'Cultural': "#28a7ff",
-    'Health': '#654eff',
-    'Other': "#a71fdb"
+    'Business': "#942011",
+    'Cultural': "#f77553",
+    'Education': "#fdac13",
+    'Health': '#78aa46',
+    'Other': "#177501"
 };
 
 let blurbs = {
