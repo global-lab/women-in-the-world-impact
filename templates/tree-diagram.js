@@ -92,7 +92,7 @@ function graph() {
 
                 const transition = svg.transition()
                     .duration(duration)
-                    .attr("viewBox", [-width / 2, -height / 4, width, height])
+                    .attr("viewBox", [-width / 2, -height / 2.5, width, height])
                     .tween("resize", window.ResizeObserver ? null : () => () => svg.dispatch("toggle"));
 
                 // Update the nodes…
